@@ -3,8 +3,7 @@ on:
   push:
     branches:
       - 'main'
-    paths:
-      - '1/**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
