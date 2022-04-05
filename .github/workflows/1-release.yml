@@ -1,8 +1,10 @@
 name: '1'
 on:
   push:
-    branches:
-      - 'main'
+    branches: ['main']
+    paths:
+      - '1/**'
+      - '.github/**'
 
 jobs:
   build:
