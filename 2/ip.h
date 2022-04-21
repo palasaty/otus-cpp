@@ -20,7 +20,7 @@ public:
     void sort() {}
     
     void print_all() {
-        print([](const Ip& ip)->bool { return true; });
+        print([](const Ip& )->bool { return true; });
     }
 
 private:
