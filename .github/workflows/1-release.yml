@@ -4,7 +4,7 @@ on:
     branches: ['main']
     paths:
       - '1/**'
-      - '.github/**'
+      - '.github/workflows/1-release.yml'
 
 jobs:
   build:
