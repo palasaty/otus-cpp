@@ -9,7 +9,7 @@ configure_file(version.h.in version.h)
 
 add_executable(ipfilter main.cc ip.cc)
 
-set_target_properties(ipfilter helloworld PROPERTIES
+set_target_properties(ipfilter PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
