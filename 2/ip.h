@@ -4,35 +4,37 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <array>
+
+using IpBytes = std::array<uint8_t, 4>;
 
 class Ip {
 public:
     Ip(const std::string&);
     void print() const;
+    bool operator<(const Ip &r) const;
+
+    bool equal(const IpBytes& ) const;
+    bool equal_any(uint8_t) const;
 
 private:
-    std::string _ip_str;    
+    std::string _ip_str;   
+    IpBytes _ip_bytes;
 };
+
+using IpVector = std::vector<Ip>;
 
 class IpContainer {
 public:
     void add(const std::string&);
-    void sort() {}
+    void sort();
     
-    void print_all() {
-        print([](const Ip& )->bool { return true; });
-    }
+    void print();
+    void print_equal(const IpBytes&& );
+    void print_equal_any(uint8_t);
 
 private:
-    template<typename P>
-    void print(P&& p){
-        for_each(_data.begin(), _data.end(), [p](const Ip& ip) {
-            if (p(ip)) ip.print();
-        });    
-    }
-    
-private:
-    std::vector<Ip> _data;    
+    IpVector _data;    
 };
 
 #endif
