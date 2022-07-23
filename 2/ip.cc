@@ -5,20 +5,30 @@
 Ip::Ip(const std::string& s)
     : _ip_str{s.substr(0, s.find_first_of('\t'))}
 {
-    size_t idx = 0, pos0 = 0, pos1 = s.find_first_of('.');
-    while(pos1 != std::string::npos) {
-        _ip_bytes[idx++] = std::stoul(s.substr(pos0, pos1 - pos0));
+    try {
+        size_t idx = 0, pos0 = 0, pos1 = s.find_first_of('.');
+        while(pos1 != std::string::npos) {
+            _ip_bytes[idx++] = std::stoul(s.substr(pos0, pos1 - pos0));
+            
+            pos0 = pos1 + 1;
+            pos1 = s.find_first_of('.', pos0);
+        }
         
-        pos0 = pos1 + 1;
-        pos1 = s.find_first_of('.', pos0);
+        _ip_bytes[idx] = std::stoul(s.substr(pos0));
+        if (idx != 3)
+            throw IpCreationException(_ip_str, "Ip address should have 4 parts");
+    } catch(IpCreationException& e) {
+        throw;
+    } catch(std::exception& ) {
+        throw IpCreationException(_ip_str, "Non-number symbols");
     }
-    
-    _ip_bytes[idx] = std::stoul(s.substr(pos0));
+
 }
 
 bool Ip::operator<(const Ip &r) const {
-    return std::tie(_ip_bytes[0], _ip_bytes[1], _ip_bytes[2], _ip_bytes[3]) <
-            std::tie(r._ip_bytes[0], r._ip_bytes[1], r._ip_bytes[2], r._ip_bytes[3]);
+    //return std::tie(_ip_bytes[0], _ip_bytes[1], _ip_bytes[2], _ip_bytes[3]) <
+    //        std::tie(r._ip_bytes[0], r._ip_bytes[1], r._ip_bytes[2], r._ip_bytes[3]);
+    return _ip_bytes < r._ip_bytes;
 }
 
 bool Ip::equal(const IpBytes& b) const {

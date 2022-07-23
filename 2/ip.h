@@ -5,8 +5,25 @@
 #include <vector>
 #include <algorithm>
 #include <array>
+#include <sstream>
+#include <iostream>
 
 using IpBytes = std::array<uint8_t, 4>;
+
+class IpCreationException : public std::exception {
+public:
+    IpCreationException(const std::string& input, const std::string& cause) 
+        : _message(make_message(input, cause)){}
+    static std::string make_message(const std::string& input, const std::string& cause) {
+        return "Exception while parsing '" + input + "': " + cause;
+    }
+    const char* what() const throw() override {
+        return _message.c_str();
+    }
+
+private:
+    std::string _message;
+};
 
 class Ip {
 public:

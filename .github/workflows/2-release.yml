@@ -15,6 +15,7 @@ jobs:
           submodules: true
       - run: cmake ./2 -DPATCH_VERSION=${{ github.run_number }} 
       - run: cmake --build .
+      - run: ctest --output-on-failure
       - run: cmake --build . --target package
       - run: ./iptest
       - name: Create Release

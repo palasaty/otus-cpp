@@ -16,7 +16,7 @@ set_target_properties(ipfilter PROPERTIES
 )
 
 target_compile_options(ipfilter PRIVATE
-    -Wall -Wextra -pedantic -Werror
+    -Wall -Wextra -pedantic -Werror -ggdb
 )
 
 target_link_libraries(ipfilter ip)
