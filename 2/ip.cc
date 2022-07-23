@@ -26,8 +26,6 @@ Ip::Ip(const std::string& s)
 }
 
 bool Ip::operator<(const Ip &r) const {
-    //return std::tie(_ip_bytes[0], _ip_bytes[1], _ip_bytes[2], _ip_bytes[3]) <
-    //        std::tie(r._ip_bytes[0], r._ip_bytes[1], r._ip_bytes[2], r._ip_bytes[3]);
     return _ip_bytes < r._ip_bytes;
 }
 
