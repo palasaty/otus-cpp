@@ -7,7 +7,7 @@ project(allocator VERSION ${PROJECT_VESRION})
 
 configure_file(version.h.in version.h)
 
-add_library(alloclib allocator.cc)
+#add_library(alloclib allocator.cc)
 add_executable(allocator main.cc)
 
 set_target_properties(allocator PROPERTIES
@@ -19,7 +19,7 @@ target_compile_options(allocator PRIVATE
     -Wall -Wextra -pedantic -Werror -ggdb
 )
 
-target_link_libraries(allocator alloclib)
+#target_link_libraries(allocator alloclib)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -46,7 +46,7 @@ add_executable(
 )
 target_link_libraries(
   alloctest
-  alloclib
+  #alloclib
   gtest_main
 )
 
