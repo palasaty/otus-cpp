@@ -9,6 +9,12 @@ template<typename T, std::size_t N = 10>
 class Allocator {
 public:
 	using value_type = T;
+	  
+	template<typename U>
+    struct rebind {
+    	using other = Allocator<U>;
+  	};
+
 	Allocator() = default;
 
 	template <typename U>

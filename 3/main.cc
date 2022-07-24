@@ -8,7 +8,7 @@ int main()
    std::cout << "Hello world\n";
 
    using MapStd     = std::map<int, int>;
-   using MapCustom  = std::map<int, int, std::less<int>, Allocator<std::pair<const int, int>>>;
+   using MapCustom  = std::map<int, int, std::less<int>, Allocator<std::pair<const int, int>, 10>>;
 
    MapInvoker<MapStd> mapStd(10);
    MapInvoker<MapCustom> mapCustom(10); 
