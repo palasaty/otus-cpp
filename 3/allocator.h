@@ -57,7 +57,6 @@ public:
 	Allocator(const Allocator<U>&) {}
 
 	value_type* allocate (std::size_t n) { 
-		//return static_cast<value_type*>(::operator new (n*sizeof(value_type)));
 		for(auto& b: _blocks) 
 			if (!b.full()) 	return b.getChunk(n);
 
@@ -66,7 +65,6 @@ public:
 	}
 	
 	void deallocate (value_type*, std::size_t) noexcept{
-		//::operator delete(p);
 	}
 
 	template<typename U, typename ...Args>
