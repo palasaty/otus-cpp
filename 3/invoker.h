@@ -1,6 +1,8 @@
 #ifndef __invoker_h__
 #define __invoker_h__
 
+#include <cstdint>
+
 uint32_t factorial(uint32_t n)
 {
     if (n == 0)  return 1;
@@ -28,6 +30,29 @@ private:
 
 private:
 	T _map;
+};
+
+template<typename T>
+class Invoker {
+public:
+	Invoker(uint8_t n) {
+		fill(n);
+		print();
+	}
+private:
+	void fill(uint8_t n) {
+	  for (uint8_t i = 0; i < n; ++i) {
+	    _data.add(i);
+	  }
+	}
+
+	void print() {
+	  for (auto item: _data) 
+	    std::cout << item << std::endl;
+	}
+
+private:
+	T _data;
 };
 
 #endif

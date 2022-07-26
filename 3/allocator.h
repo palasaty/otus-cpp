@@ -3,6 +3,42 @@
 
 #include <cstddef>
 #include <vector>
+#include <deque>
+
+#include <iostream>
+
+
+template<typename T, std::size_t N>
+class Block {
+public:
+	Block() {
+		_pool.resize(N);
+	}
+
+	bool full() {
+		bool val = findAvailable() > N;
+		return val;
+	}
+
+	T* getChunk(size_t n) {
+		if (n > N) throw std::bad_alloc();
+
+		std::fill_n(_pool_state.begin() + _available_pos, n, 1);
+		return &_pool[_available_pos];
+	}
+
+private:
+	size_t findAvailable() {
+		// TODO: set _available_pos and implement chunking
+		return _pool_state[0] ? N + 1 : 0;
+	}
+
+
+private:
+	std::vector<T> _pool;
+	std::vector<bool> _pool_state = {0};
+	std::size_t _available_pos {0}; 
+};
 
 //todo: use blocks
 template<typename T, std::size_t N = 10>
@@ -21,25 +57,19 @@ public:
 	Allocator(const Allocator<U>&) {}
 
 	value_type* allocate (std::size_t n) { 
-		return static_cast<value_type*>(::operator new (n*sizeof(value_type)));
+		//return static_cast<value_type*>(::operator new (n*sizeof(value_type)));
+		for(auto& b: _blocks) 
+			if (!b.full()) 	return b.getChunk(n);
+
+		_blocks.emplace_back();
+		return _blocks.back().getChunk(n);
 	}
 	
-	void deallocate (value_type* p, std::size_t) noexcept{
-		::operator delete(p);
+	void deallocate (value_type*, std::size_t) noexcept{
+		//::operator delete(p);
 	}
 private:
-	std::vector<std::vector<char>> _blocks;
+	std::vector<Block<T,N>> _blocks;
 };
 
-
-// todo: implement
-template <class T, class U>
-constexpr bool operator== (const Allocator<T>&, const Allocator<U>&) noexcept {
-	return false;
-}
-
-template <class T, class U>
-constexpr bool operator!= (const Allocator<T>&, const Allocator<U>&) noexcept {
-	return false;
-}
 #endif
