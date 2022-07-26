@@ -9,9 +9,9 @@ int main()
    std::cout << "Hello world\n";
 
    using MapStd     = std::map<int, int>;
-   using MapCustom  = std::map<int, int, std::less<int>, Allocator<std::pair<const int, int>, 10>>;
+   using MapCustom  = std::map<int, int, std::less<int>, Allocator<std::pair<const int, int>>>;
    using ContStd    = Container<int>;
-   using ContCustom = Container<int, Allocator<int>>;
+   using ContCustom = Container<int, Allocator<int, 20>>;
 
    MapInvoker<MapStd> mapStd(10);
    MapInvoker<MapCustom> mapCustom(10); 

@@ -1,6 +1,8 @@
 #ifndef __container_h__
 #define __container_h__
 
+#include <math.h>
+
 template<typename T, typename Allocator = std::allocator<T>>
 class Container {
 public:
@@ -12,9 +14,22 @@ public:
     }
     T* begin(){ return _data; };
   	T* end(){ return _data + _size; };
+  	T& operator[](size_t idx) {
+  		return _data[idx];
+	}
 private:
 	void preallocate() {
+		size_t prevAllocatedSize = _allocatedSize;
+		T* prevData = _data;
+		_allocatedSize = pow(2, _allocatedSize);
+		_data = _allocator.allocate(_allocatedSize);
 
+    	for(size_t i = 0; i < _size; ++i) {
+			_allocator.construct(_data + i, *(prevData + i));
+			_allocator.destroy(prevData + 1);
+		}
+
+		if (prevData) _allocator.deallocate(prevData, prevAllocatedSize);
 	}
 
 private:
