@@ -12,7 +12,8 @@ template<typename T, std::size_t N>
 class Block {
 public:
 	Block() {
-		_pool.resize(N);
+		//_pool.resize(N);
+		_pool = static_cast<T*>(::operator new( N*sizeof(T) ));
 	}
 
 	bool full() {
@@ -35,7 +36,8 @@ private:
 
 
 private:
-	std::vector<T> _pool;
+	//std::vector<T> _pool;
+	T* _pool;
 	std::vector<bool> _pool_state = {0};
 	std::size_t _available_pos {0}; 
 };
