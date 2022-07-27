@@ -12,16 +12,16 @@ template<typename T, std::size_t N>
 class Block {
 public:
 	Block() {
-		//_pool.resize(N);
 		_pool = static_cast<T*>(::operator new( N*sizeof(T) ));
 	}
 
 	bool full() {
+		findAvailable();
 		return _available_pos > N;
 	}
 
 	bool has(T* p) {
-		return p > _pool && p < _pool + N;
+		return p >= _pool && p < _pool + N;
 	}
 
 	T* getChunk(size_t n) {
@@ -34,21 +34,22 @@ public:
 	void resetChunk(T* p, size_t n) {
 		size_t i = 0;
 		while(&_pool[i++] != p);
+		if (i > N) 
+			throw std::runtime_error("Deallocation problem");
 
-		std::fill_n(_pool_state.begin() + i, n, 0);
+		std::fill_n(_pool_state.begin() + i - 1, n, 0);
 	}
 
 private:
 	void findAvailable() {
 		_available_pos = std::distance( std::begin(_pool_state), 
-			find_if(_pool_state.begin() + _available_pos, _pool_state.end(), [](bool x) { return !x; }));
+			std::find_if_not(_pool_state.begin() + _available_pos, _pool_state.end(), [](bool x) { return x; }));
 	}
 
 
 private:
-	//std::vector<T> _pool;
 	T* _pool;
-	std::vector<bool> _pool_state = {0};
+	std::array<bool, N> _pool_state = {0};
 	std::size_t _available_pos {0}; 
 };
 

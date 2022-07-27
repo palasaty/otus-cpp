@@ -13,10 +13,14 @@ int main()
    using ContStd    = Container<int>;
    using ContCustom = Container<int, Allocator<int, 20>>;
 
-   MapInvoker<MapStd> mapStd(10);
-   MapInvoker<MapCustom> mapCustom(10); 
-   Invoker<ContStd> contStd(10);
-   Invoker<ContCustom> contCustom(10);
+   try {
+      MapInvoker<MapStd> mapStd(10);
+      MapInvoker<MapCustom> mapCustom(10); 
+      Invoker<ContStd> contStd(10);
+      Invoker<ContCustom> contCustom(10);
+   } catch(std::exception& e) {
+      std::cerr << e.what() << "\n";
+   }
     
     return 0;
 }

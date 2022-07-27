@@ -29,7 +29,7 @@ private:
 			std::allocator_traits<Allocator>::destroy(_allocator, prevData + 1);
 		}
 
-		if (prevData) _allocator.deallocate(prevData, prevAllocatedSize);
+		if (prevAllocatedSize) _allocator.deallocate(prevData, prevAllocatedSize);
 	}
 
 private:
