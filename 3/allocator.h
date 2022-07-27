@@ -17,8 +17,11 @@ public:
 	}
 
 	bool full() {
-		bool val = findAvailable() > N;
-		return val;
+		return _available_pos > N;
+	}
+
+	bool has(T* p) {
+		return p > _pool && p < _pool + N;
 	}
 
 	T* getChunk(size_t n) {
@@ -28,10 +31,17 @@ public:
 		return &_pool[_available_pos];
 	}
 
+	void resetChunk(T* p, size_t n) {
+		size_t i = 0;
+		while(&_pool[i++] != p);
+
+		std::fill_n(_pool_state.begin() + i, n, 0);
+	}
+
 private:
-	size_t findAvailable() {
-		// TODO: set _available_pos and implement chunking
-		return _pool_state[0] ? N + 1 : 0;
+	void findAvailable() {
+		_available_pos = std::distance( std::begin(_pool_state), 
+			find_if(_pool_state.begin() + _available_pos, _pool_state.end(), [](bool x) { return !x; }));
 	}
 
 
@@ -66,7 +76,13 @@ public:
 		return _blocks.back().getChunk(n);
 	}
 	
-	void deallocate (value_type*, std::size_t) noexcept{
+	void deallocate (value_type* p, std::size_t n) noexcept{
+		for (auto& b : _blocks) {
+			if (b.has(p)) {
+				b.resetChunk(p, n);
+				return;
+			}
+		}
 	}
 
 private:
