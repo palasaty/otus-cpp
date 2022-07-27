@@ -25,8 +25,8 @@ private:
 		_data = _allocator.allocate(_allocatedSize);
 
     	for(size_t i = 0; i < _size; ++i) {
-			_allocator.construct(_data + i, *(prevData + i));
-			_allocator.destroy(prevData + 1);
+			std::allocator_traits<Allocator>::construct(_allocator, _data + i, *(prevData + i));
+			std::allocator_traits<Allocator>::destroy(_allocator, prevData + 1);
 		}
 
 		if (prevData) _allocator.deallocate(prevData, prevAllocatedSize);

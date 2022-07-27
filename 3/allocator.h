@@ -67,14 +67,6 @@ public:
 	void deallocate (value_type*, std::size_t) noexcept{
 	}
 
-	template<typename U, typename ...Args>
-    void construct(U *p, Args &&...args) {
-        new(p) U(std::forward<Args>(args)...);
-    }
-
-    void destroy(T *p) {
-        p->~T();
-    }
 private:
 	std::vector<Block<T,N>> _blocks;
 };
